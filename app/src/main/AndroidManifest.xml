@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:sharedUserId="org.jraf.android" android:versionCode="115" android:versionName="1.1.1" package="org.jraf.android.nolock" platformBuildVersionCode="25" platformBuildVersionName="7.1.1">
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="25"/>
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
-    <application android:theme="@style/Theme" android:label="@string/app_name" android:icon="@drawable/icon">
-        <service android:name="org.jraf.android.nolock.NoLockService"/>
-        <activity android:label="@string/app_name" android:name="org.jraf.android.nolock.activity.MainActivity">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.jraf.android.nolock"
+    android:sharedUserId="org.jraf.android"
+    android:versionCode="115"
+    android:versionName="1.1.1">
+
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/Theme">
+        <service android:name="org.jraf.android.nolock.NoLockService" />
+        <activity
+            android:name="org.jraf.android.nolock.activity.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver android:name="org.jraf.android.nolock.NoLockBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.jraf.android.nolock.ACTION_UNLOCKED"/>
+                <action android:name="org.jraf.android.nolock.ACTION_UNLOCKED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.jraf.android.nolock.ACTION_LOCKED"/>
+                <action android:name="org.jraf.android.nolock.ACTION_LOCKED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.jraf.android.nolock.ACTION_TOGGLE"/>
+                <action android:name="org.jraf.android.nolock.ACTION_TOGGLE" />
             </intent-filter>
         </receiver>
-        <receiver android:label="@string/app_name" android:name="org.jraf.android.nolock.AppWidget">
+        <receiver
+            android:name="org.jraf.android.nolock.AppWidget"
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidget_info"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_info" />
         </receiver>
     </application>
 </manifest>

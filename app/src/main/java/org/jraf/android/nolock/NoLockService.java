@@ -9,26 +9,26 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class NoLockService extends Service {
-    private static final String a = ("NoLock/" + NoLockService.class.getSimpleName());
-    private static final Object b = new Object();
-    private KeyguardLock c;
+    private static final String TAG = "NoLock/" + NoLockService.class.getSimpleName();
+    private static final Object object = new Object();
+    private KeyguardLock keyguardLock;
 
     private void a() {
         boolean z = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("PREF_LOCKING", true);
-        Log.d(a, "handleStart locking=" + z + " (" + (z ? "nolock DISABLED" : "nolock ENABLED") + ")");
+        Log.d(TAG, "handleStart locking=" + z + " (" + (z ? "nolock DISABLED" : "nolock ENABLED") + ")");
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService("keyguard");
-        synchronized (b) {
-            if (this.c != null) {
-                Log.d(a, "handleStart mKeyguardLock != null: reenabling keyguard");
-                this.c.reenableKeyguard();
-                this.c = null;
+        synchronized (object) {
+            if (this.keyguardLock != null) {
+                Log.d(TAG, "handleStart mKeyguardLock != null: reenabling keyguard");
+                this.keyguardLock.reenableKeyguard();
+                this.keyguardLock = null;
             }
             if (z) {
                 stopSelf();
             } else {
-                Log.d(a, "locking == false: getting newKeyguardLock");
-                this.c = keyguardManager.newKeyguardLock(getClass().toString());
-                this.c.disableKeyguard();
+                Log.d(TAG, "locking == false: getting newKeyguardLock");
+                this.keyguardLock = keyguardManager.newKeyguardLock(getClass().toString());
+                this.keyguardLock.disableKeyguard();
             }
         }
     }
@@ -39,40 +39,40 @@ public class NoLockService extends Service {
 
     public void onCreate() {
         super.onCreate();
-        Log.d(a, "onCreate");
+        Log.d(TAG, "onCreate");
     }
 
     public void onDestroy() {
         super.onDestroy();
-        Log.d(a, "onDestroy");
-        synchronized (b) {
-            if (this.c != null) {
-                Log.d(a, "handleStart mKeyguardLock != null: reenabling keyguard");
-                this.c.reenableKeyguard();
-                this.c = null;
+        Log.d(TAG, "onDestroy");
+        synchronized (object) {
+            if (this.keyguardLock != null) {
+                Log.d(TAG, "handleStart mKeyguardLock != null: reenabling keyguard");
+                this.keyguardLock.reenableKeyguard();
+                this.keyguardLock = null;
             }
         }
     }
 
     public void onLowMemory() {
         super.onLowMemory();
-        Log.d(a, "onLowMemory");
-        synchronized (b) {
-            if (this.c != null) {
-                Log.d(a, "handleStart mKeyguardLock != null: reenabling keyguard");
-                this.c.reenableKeyguard();
-                this.c = null;
+        Log.d(TAG, "onLowMemory");
+        synchronized (object) {
+            if (this.keyguardLock != null) {
+                Log.d(TAG, "handleStart mKeyguardLock != null: reenabling keyguard");
+                this.keyguardLock.reenableKeyguard();
+                this.keyguardLock = null;
             }
         }
     }
 
     public void onStart(Intent intent, int i) {
-        Log.d(a, "onStart");
+        Log.d(TAG, "onStart");
         a();
     }
 
     public int onStartCommand(Intent intent, int i, int i2) {
-        Log.d(a, "onStartCommand");
+        Log.d(TAG, "onStartCommand");
         a();
         return 1;
     }
