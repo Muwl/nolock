@@ -14,68 +14,61 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-public class NoLockBroadcastReceiver extends BroadcastReceiver {
-    private static final String a = ("NoLock/" + NoLockBroadcastReceiver.class.getSimpleName());
+import static android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP;
 
-    private static void a(Context context) {
+public class NoLockBroadcastReceiver extends BroadcastReceiver {
+    private static final String TAG = "NoLock/" + NoLockBroadcastReceiver.class.getSimpleName();
+
+    private static void init(Context context) {
         AppWidgetManager instance = AppWidgetManager.getInstance(context);
         for (int a : instance.getAppWidgetIds(new ComponentName(context, AppWidget.class))) {
             AppWidget.a(context, instance, a);
         }
     }
 
+    @Override
     public void onReceive(Context context, Intent intent) {
-        int i;
-        Context context2;
-        boolean z = true;
-        Log.d(a, "onReceive " + intent);
-        Editor edit;
+        int rstring;
+        Log.d(TAG, "onReceive " + intent);
         if ("org.jraf.android.nolock.ACTION_LOCKED".equals(intent.getAction())) {
-            Log.d(a, "ACTION_LOCKED");
-            edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            Log.d(TAG, "ACTION_LOCKED");
+            Editor edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
             edit.putBoolean("PREF_LOCKING", true);
             edit.commit();
             context.startService(new Intent(context, NoLockService.class));
-            a(context);
-            i = R.string.locking;
-            context2 = context;
+            init(context);
+            rstring = R.string.locking;
         } else {
-            Context context3;
             if ("org.jraf.android.nolock.ACTION_UNLOCKED".equals(intent.getAction())) {
-                Log.d(a, "ACTION_UNLOCKED");
-                Editor edit2 = PreferenceManager.getDefaultSharedPreferences(context).edit();
-                edit2.putBoolean("PREF_LOCKING", false);
-                edit2.commit();
+                Log.d(TAG, "ACTION_UNLOCKED");
+                Editor edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+                edit.putBoolean("PREF_LOCKING", false);
+                edit.commit();
                 context.startService(new Intent(context, NoLockService.class));
-                a(context);
-                context3 = context;
+                init(context);
             } else {
                 if ("org.jraf.android.nolock.ACTION_TOGGLE".equals(intent.getAction())) {
-                    Log.d(a, "ACTION_TOGGLE");
+                    Log.d(TAG, "ACTION_TOGGLE");
                     SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                    boolean z2 = defaultSharedPreferences.getBoolean("PREF_LOCKING", true);
-                    edit = defaultSharedPreferences.edit();
+                    boolean prefLocking = defaultSharedPreferences.getBoolean("PREF_LOCKING", true);
+                    Editor edit = defaultSharedPreferences.edit();
                     String str = "PREF_LOCKING";
-                    if (z2) {
-                        z = false;
+                    if (prefLocking) {
+                        prefLocking = false;
                     }
-                    edit.putBoolean(str, z);
+                    edit.putBoolean(str, prefLocking);
                     edit.commit();
                     context.startService(new Intent(context, NoLockService.class));
-                    a(context);
-                    if (z2) {
-                        context3 = context;
-                    } else {
-                        i = R.string.locking;
-                        context2 = context;
+                    init(context);
+                    if (!prefLocking) {
+                        rstring = R.string.locking;
                     }
                 }
-                ((AlarmManager) context.getSystemService("alarm")).setRepeating(2, SystemClock.elapsedRealtime() + 1000, 600000, PendingIntent.getService(context, 0, new Intent(context, NoLockService.class), 0));
+                ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).setRepeating(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000, 600000, PendingIntent.getService(context, 0, new Intent(context, NoLockService.class), 0));
             }
-            context2 = context3;
-            i = R.string.unlocking;
+            rstring = R.string.unlocking;
         }
-        Toast.makeText(context2, i, 0).show();
-        ((AlarmManager) context.getSystemService("alarm")).setRepeating(2, SystemClock.elapsedRealtime() + 1000, 600000, PendingIntent.getService(context, 0, new Intent(context, NoLockService.class), 0));
+        Toast.makeText(context, rstring, Toast.LENGTH_SHORT).show();
+        ((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).setRepeating(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 1000, 600000, PendingIntent.getService(context, 0, new Intent(context, NoLockService.class), 0));
     }
 }

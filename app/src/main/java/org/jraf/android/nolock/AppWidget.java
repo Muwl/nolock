@@ -17,11 +17,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public class AppWidget extends AppWidgetProvider {
-    private static final String a = ("NoLock/" + AppWidget.class.getSimpleName());
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
-    public static void a(Context context, AppWidgetManager appWidgetManager, int i) {
-        Log.d(a, "updateAppWidget appWidgetId=" + i);
+public class AppWidget extends AppWidgetProvider {
+    private static final String TAG = ("NoLock/" + AppWidget.class.getSimpleName());
+
+    public static void init(Context context, AppWidgetManager appWidgetManager, int i) {
+        Log.d(TAG, "updateAppWidget appWidgetId=" + i);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), Integer.parseInt(VERSION.SDK) < 4 ? R.layout.appwidget_3 : R.layout.appwidget);
         boolean z = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("PREF_LOCKING", true);
         Resources resources = context.getResources();
@@ -56,14 +58,15 @@ public class AppWidget extends AppWidgetProvider {
         rectF.set(f, dimension5, dimension4 + f, dimension4 + dimension5);
         canvas.drawBitmap(decodeResource, null, rectF, new Paint(2));
         remoteViews.setImageViewBitmap(R.id.toggleButton, createBitmap);
-        remoteViews.setOnClickPendingIntent(R.id.layout, PendingIntent.getBroadcast(context, 0, new Intent("org.jraf.android.nolock.ACTION_TOGGLE"), 134217728));
+        remoteViews.setOnClickPendingIntent(R.id.layout, PendingIntent.getBroadcast(context, 0, new Intent("org.jraf.android.nolock.ACTION_TOGGLE"), FLAG_UPDATE_CURRENT));
         appWidgetManager.updateAppWidget(i, remoteViews);
     }
 
+    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] iArr) {
-        Log.d(a, "onUpdate");
+        Log.d(TAG, "onUpdate");
         for (int a : iArr) {
-            a(context, appWidgetManager, a);
+            init(context, appWidgetManager, a);
         }
     }
 }

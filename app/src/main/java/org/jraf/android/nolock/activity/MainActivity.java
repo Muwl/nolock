@@ -26,65 +26,60 @@ import org.jraf.android.nolock.NoLockService;
 import org.jraf.android.nolock.R;
 
 public class MainActivity extends Activity {
-    SharedPreferences a;
-    TextView b;
-    TextView c;
-    private final OnCheckedChangeListener d = new OnCheckedChangeListener() {
+    SharedPreferences sp;
+    TextView textView1;
+    TextView textView2;
+    private final OnCheckedChangeListener onCheckedChangeListener = new OnCheckedChangeListener() {
+        @Override
         public final void onCheckedChanged(CompoundButton compoundButton, boolean z) {
             int i = 0;
-            Editor edit = MainActivity.this.a.edit();
+            Editor edit = MainActivity.this.sp.edit();
             edit.putBoolean("PREF_LOCKING", z);
             edit.commit();
-            Animation loadAnimation = AnimationUtils.loadAnimation(MainActivity.this, 17432579);
-            loadAnimation.setDuration(500);
-            Animation loadAnimation2 = AnimationUtils.loadAnimation(MainActivity.this, 17432578);
-            loadAnimation2.setDuration(500);
             if (z) {
-                MainActivity.this.b.startAnimation(loadAnimation2);
-                MainActivity.this.b.setVisibility(0);
-                MainActivity.this.c.setVisibility(8);
-                MainActivity.this.c.startAnimation(loadAnimation);
+                MainActivity.this.textView1.setVisibility(View.VISIBLE);
+                MainActivity.this.textView2.setVisibility(View.GONE);
             } else {
-                MainActivity.this.c.startAnimation(loadAnimation2);
-                MainActivity.this.c.setVisibility(0);
-                MainActivity.this.b.setVisibility(8);
-                MainActivity.this.b.startAnimation(loadAnimation);
+                MainActivity.this.textView2.setVisibility(View.VISIBLE);
+                MainActivity.this.textView1.setVisibility(View.GONE);
             }
             MainActivity.this.startService(new Intent(MainActivity.this, NoLockService.class));
             AppWidgetManager instance = AppWidgetManager.getInstance(MainActivity.this);
             int[] appWidgetIds = instance.getAppWidgetIds(new ComponentName(MainActivity.this, AppWidget.class));
             int length = appWidgetIds.length;
             while (i < length) {
-                AppWidget.a(MainActivity.this, instance, appWidgetIds[i]);
+                AppWidget.init(MainActivity.this, instance, appWidgetIds[i]);
                 i++;
             }
         }
     };
 
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.main);
-        this.a = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean z = this.a.getBoolean("PREF_LOCKING", true);
+        this.sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean z = this.sp.getBoolean("PREF_LOCKING", true);
         ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
         toggleButton.setChecked(z);
-        toggleButton.setOnCheckedChangeListener(this.d);
-        this.b = (TextView) findViewById(R.id.textLocking);
-        this.c = (TextView) findViewById(R.id.textUnlocking);
+        toggleButton.setOnCheckedChangeListener(this.onCheckedChangeListener);
+        this.textView1 = (TextView) findViewById(R.id.textLocking);
+        this.textView2 = (TextView) findViewById(R.id.textUnlocking);
         if (z) {
-            this.b.setVisibility(0);
-            this.c.setVisibility(8);
+            this.textView1.setVisibility(View.VISIBLE);
+            this.textView2.setVisibility(View.GONE);
         } else {
-            this.b.setVisibility(8);
-            this.c.setVisibility(0);
+            this.textView1.setVisibility(View.GONE);
+            this.textView2.setVisibility(View.VISIBLE);
         }
         startService(new Intent(this, NoLockService.class));
-        if (!this.a.getBoolean("PREF_SEEN_WELCOME", false)) {
+        if (!this.sp.getBoolean("PREF_SEEN_WELCOME", false)) {
             showDialog(1);
-            this.a.edit().putBoolean("PREF_SEEN_WELCOME", true).commit();
+            this.sp.edit().putBoolean("PREF_SEEN_WELCOME", true).commit();
         }
     }
 
+    @Override
     protected Dialog onCreateDialog(int i) {
         Builder builder = new Builder(this);
         View inflate;
@@ -109,11 +104,13 @@ public class MainActivity extends Activity {
         return builder.create();
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.menu_about:
@@ -126,6 +123,7 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(menuItem);
     }
 
+    @Override
     protected void onPause() {
         super.onPause();
         finish();
