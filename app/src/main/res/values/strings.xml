@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">No Lock</string>
+    <string name="common_ok">OK</string>
+    <string name="dialog_about_message">&lt;b&gt;BoD No Lock v1.1.0&lt;/b&gt; &lt;br/&gt; &lt;br/&gt;· &lt;a href=mailto:BoD@JRAF.org&gt;BoD@JRAF.org&lt;/a&gt; &lt;br/&gt;· &lt;a href=http://www.JRAF.org/android&gt;www.JRAF.org/android&lt;/a&gt; &lt;br/&gt; &lt;br/&gt;Copyright (C) 2010-2017 BoD (aka Benoît LUBEK).</string>
+    <string name="dialog_about_title">About</string>
+    <string name="dialog_welcome_message">Please note that a home screen &lt;b&gt;widget&lt;/b&gt; is also available.&lt;br/&gt; &lt;br/&gt; Please also note that when locking is disabled, if you turn \'Airplane mode\' on and off, you &lt;b&gt;won\'t be able to type your PIN&lt;/b&gt; thus voice and data won\'t work! That\'s because the PIN dialog appears only after unlocking.&lt;br/&gt; If that happens, simple re-enable locking and turn off and on the screen: the PIN dialog will appear.&lt;br/&gt; &lt;br/&gt; Please don\'t send me a mail asking if the &lt;b&gt;volume buttons&lt;/b&gt; can be disabled, as unfortunately this cannot be done.</string>
+    <string name="dialog_welcome_title">Welcome</string>
+    <string name="locked">Locked</string>
+    <string name="locking">Locking enabled</string>
+    <string name="menu_about">About</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="unlocking">Locking disabled</string>
+    <string name="menu_help">Help</string>
+</resources>

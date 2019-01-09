@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/toggle"
+        android:textOff=" "
+        android:textOn=" " />
+
+    <TextView
+        android:id="@+id/textLocking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/locking"
+        android:textColor="#f44"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textUnlocking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/unlocking"
+        android:textColor="#844"
+        android:textSize="24sp" />
+</LinearLayout>

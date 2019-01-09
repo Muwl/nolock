@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="appWidget_bubbleHeight">20dp</dimen>
+    <dimen name="appWidget_textMarginBottom">5dp</dimen>
+    <dimen name="appWidget_textMarginLeftAndRight">5dp</dimen>
+    <dimen name="appWidget_iconWidth">42dp</dimen>
+    <dimen name="appWidget_textSize">13dp</dimen>
+</resources>
